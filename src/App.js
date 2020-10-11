@@ -25,9 +25,9 @@ class App extends Component {
     //エンドポイント + 郵便番号 + .jsonのURLへaxiosでGETリクエスト
     axios
       .get(ZIPCODE_ENDPOINT + zipcodeUrl + ".json")
-      .then(results => {
-        //レスポンスを取得
-        const data = results.data;
+      .then(function(response) {
+        //レスポンスからJSONデータを取得
+        const data = response.data;
         //レスポンスから日本語の住所を取り出す
         const addressData = data["data"][0]["ja"];
         //住所データから、prefectireとaddress1-4を取り出し、整形する
@@ -36,14 +36,13 @@ class App extends Component {
         this.setState({
           address: address
         });
-      },
-      )
-      .catch(() => {
+      }.bind(this))
+      .catch(function() {
         //エラーの場合
         this.setState({
           address: "無効な郵便番号です"
         });
-      });
+      }.bind(this));
 
     //入力された郵便番号をリセット
     event.target.reset();
